@@ -1,13 +1,19 @@
 <script setup>
 import Button from "./components/ButtonUi.vue";
 import Table from "./components/Table/Table.vue";
-import AddOrganizationModal from "./components/AddOrganizationModal.vue";
 import {computed, ref} from "vue";
 import {mockOrganizations} from "./api/mockOrganizations.js";
+import Popup from "./components/Popup.vue";
 
-const modalToggle = ref(false)
+const modalVisible = ref(false);
+
 
 const query = ref('')
+
+function handleSubmit(formData) {
+  console.log('Получены данные из модалки:', formData);
+  modalVisible.value = false;
+}
 
 const queryDirector = computed(()=>{
   let directors = mockOrganizations.value.director;
@@ -23,7 +29,11 @@ const queryDirector = computed(()=>{
 
 <template>
   <div :class="$style.container">
-    <AddOrganizationModal v-if="modalToggle"/>
+    <Popup
+        v-if="modalVisible"
+        @close="modalVisible = false"
+        @submit="handleSubmit"
+    />
     <div :class="$style.containerHeader">
       <input
           placeholder="Найти по ФИО..."
@@ -35,7 +45,7 @@ const queryDirector = computed(()=>{
           text="Добавить"
           :option="'primary'"
           :size="'medium'"
-          @click="modalToggle = !modalToggle"
+          @click="modalVisible = !modalVisible"
       />
     </div>
 

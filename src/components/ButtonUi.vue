@@ -44,8 +44,8 @@ const buttonSize = computed(()=>{
     <button
         :class="[buttonColor, buttonSize, $style.button]"
     >
-      <slot></slot>
-      <span>{{props.text}}</span>
+      <slot v-if="$slots.default"></slot>
+      <span v-else>{{props.text}}</span>
     </button>
 </template>
 
